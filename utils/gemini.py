@@ -28,7 +28,7 @@ vertexai.init(project=project_id, credentials=credentials)
 model_cache = {}
 
 # Default model
-DEFAULT_MODEL = "gemini-1.5-flash"
+DEFAULT_MODEL = os.getenv("GEMINI_DEFAULT_MODEL")
 
 # Safety configuration
 safety_config = {
