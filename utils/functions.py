@@ -1,9 +1,7 @@
 import requests
 import os, re
-from elasticsearch import Elasticsearch, helpers
 import json
 from datetime import datetime, timedelta
-
 
 ####################### Tiktok Helpers ########################
 
@@ -110,33 +108,6 @@ def convert_string_to_date(date_str: str) -> str:
             return datetime(today.year, int(parts[0]), int(parts[1])).strftime("%Y-%m-%d")
     return "Invalid date format"
 
-######################## ES #####################
-
-def generate_bulk_data(data, index_name, id_ = None):
-    for record in data:
-        # Each record is wrapped in an action dictionary for Elasticsearch bulk API
-        if id_:
-            yield {
-                "_index": index_name,
-                "_source": record,
-                "_id":record[id_]
-            }
-
-        else:
-            yield {
-                "_index": index_name,
-                "_source": record
-            }
-
-def ingest_to_es(es, data, index_name, id_ = None):
-    # Ingest the data into Elasticsearch
-    try:
-        response = helpers.bulk(es, generate_bulk_data(data, index_name, id_ = id_))
-        print("Data successfully ingested to Elasticsearch:", response)
-
-    except Exception as e:
-        print("Error ingesting data:", e)
-        
         
 ######################## Extraction ###################
 
